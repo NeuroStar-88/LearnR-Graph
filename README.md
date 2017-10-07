@@ -1,29 +1,3 @@
 # LearnR-Graph
 Trying to learn how to use R and from a CSV file. 
 
-getwd()
-
-setwd("C:/Users/YonArn/PycharmProjects/Tweepy1")
-POTUSdata <- read.csv("POTUS_tweets.csv")
-
-library(tidytext)
-library(tidyverse)
-library(stringr)
-library(dplyr)
-
-POTUS.RT <- POTUSdata[grep("RT" , POTUSdata$text), ]  #search and save only RT
-POTUS.RT[,1:2]<- list(NULL) #remove two colums
-
-replace_reg <- "https://t.co/[A-Za-z\\d]+|http://[A-Za-z\\d]+|&amp;|&lt;|&gt;|RT|https"
-unnest_reg <- "([^A-Za-z_\\d#@']|'(?![A-Za-z_\\d#@]))"
-POTUStidy2.0 <- POTUS.RT %>%	#Putting document in tidyformat 
-	filter(!str_detect(text, "^@")) %>%
-	mutate(text = str_replace_all(text, replace_reg, "")) %>%
-	unnest_tokens(word, text, token = "regex", pattern = unnest_reg) %>%
-	filter(!word %in% stop_words$word,
-		str_detect(word, "[a-z]"))  
-    
- POTUStidy2.0 %>%
-	count(word, sort=TRUE) %>%
-	filter(str_detect(word, "^@")) %>%			#filter to keep '@'
- 	mutate(word = reorder(word, n)) 
