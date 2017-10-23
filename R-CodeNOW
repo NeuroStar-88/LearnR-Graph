@@ -1,6 +1,6 @@
 getwd()
 
-setwd("C:/Users/YonArn/PycharmProjects/Tweepy1")
+setwd("")
 POTUSdata <- read.csv("POTUS_tweets.csv")
 
 library(tidytext)
